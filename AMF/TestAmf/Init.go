@@ -2,11 +2,11 @@ package TestAmf
 
 import (
 	"free5gc/lib/path_util"
-	amf_ngap_sctp "free5gc/src/amf/amf_ngap/ngap_sctp"
-	"free5gc/src/amf/amf_util"
 	"free5gc/src/amf/factory"
 	"free5gc/src/amf/gmm"
 	"free5gc/src/amf/logger"
+	amf_ngap_sctp "free5gc/src/amf/ngap/sctp"
+	"free5gc/src/amf/util"
 	"log"
 	"net"
 	"strings"
@@ -17,10 +17,10 @@ import (
 	"github.com/davecgh/go-spew/spew"
 
 	"free5gc/lib/openapi/models"
-	"free5gc/src/amf/amf_context"
+	"free5gc/src/amf/context"
 )
 
-var TestAmf = amf_context.AMF_Self()
+var TestAmf = context.AMF_Self()
 var Config = spew.NewDefaultConfig()
 var AmfLogPath = path_util.Gofree5gcPath("free5gc/amfsslkey.log")
 var AmfPemPath = path_util.Gofree5gcPath("free5gc/support/TLS/amf.pem")
@@ -41,7 +41,7 @@ func AmfInit() {
 	TestAmf.Reset()
 	// init AMFcontext with test config file
 	factory.InitConfigFactory(configFile)
-	amf_util.InitAmfContext(TestAmf)
+	util.InitAmfContext(TestAmf)
 
 	// add Ue info
 	supi := "imsi-2089300007487"
@@ -102,8 +102,8 @@ func AmfInit() {
 	ue.Kamf = strings.Repeat("1", 64)
 	ue.SecurityCapabilities.NRIntegrityProtectionAlgorithms = [2]byte{0x40, 0x00}
 	ue.SecurityCapabilities.NREncryptionAlgorithms = [2]byte{0x40, 0x00}
-	ue.CipheringAlg = amf_context.ALG_CIPHERING_128_NEA2
-	ue.IntegrityAlg = amf_context.ALG_INTEGRITY_128_NIA2
+	ue.CipheringAlg = context.ALG_CIPHERING_128_NEA2
+	ue.IntegrityAlg = context.ALG_INTEGRITY_128_NIA2
 	ue.DerivateAnKey(models.AccessType__3_GPP_ACCESS)
 	ue.DerivateNH(ue.Kgnb)
 	ue.DerivateAlgKey()
@@ -136,7 +136,7 @@ func AmfInit() {
 // 	}
 // }
 // func addPlmnSupportList() {
-// 	plmnSupportItem := amf_context.NewPlmnSupportItem()
+// 	plmnSupportItem := context.NewPlmnSupportItem()
 // 	plmnSupportItem.PlmnId = models.PlmnId{
 // 		Mcc: "208",
 // 		Mnc: "93",
@@ -146,7 +146,7 @@ func AmfInit() {
 // 		TestAmf.PlmnSupportList = append(TestAmf.PlmnSupportList, plmnSupportItem)
 // 	}
 // }
-// func addSNssaiList(item *amf_context.PlmnSupportItem) {
+// func addSNssaiList(item *context.PlmnSupportItem) {
 // 	snssai := models.Snssai{
 // 		Sst: 1,
 // 		Sd:  "010203",
@@ -212,7 +212,7 @@ func UeAttach(anType models.AccessType) {
 			Value: "127.0.0.1:9487",
 		},
 	}
-	var ran *amf_context.AmfRan
+	var ran *context.AmfRan
 	if anType == models.AccessType__3_GPP_ACCESS {
 		if Conn == nil {
 			ran = TestAmf.NewAmfRan(testConn)
@@ -230,7 +230,7 @@ func UeAttach(anType models.AccessType) {
 	ran.AnType = anType
 	ranUe := ran.NewRanUe()
 	ue := TestAmf.UePool["imsi-2089300007487"]
-	ran.SupportedTAList = []amf_context.SupportedTAI{
+	ran.SupportedTAList = []context.SupportedTAI{
 		{
 			Tai: ue.Tai,
 		},
