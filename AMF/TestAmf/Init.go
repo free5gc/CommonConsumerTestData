@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"git.cs.nctu.edu.tw/calee/sctp"
+	"github.com/ishidawataru/sctp"
 
 	"github.com/davecgh/go-spew/spew"
 
