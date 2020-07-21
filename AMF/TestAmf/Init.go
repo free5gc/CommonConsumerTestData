@@ -1,23 +1,23 @@
 package TestAmf
 
 import (
-	"free5gc/lib/path_util"
-	"free5gc/src/amf/factory"
-	"free5gc/src/amf/gmm"
-	"free5gc/src/amf/logger"
-	amf_ngap_sctp "free5gc/src/amf/ngap/sctp"
-	"free5gc/src/amf/util"
 	"log"
 	"net"
 	"strings"
 	"time"
 
 	"git.cs.nctu.edu.tw/calee/sctp"
-
 	"github.com/davecgh/go-spew/spew"
 
+	"free5gc/lib/nas/security"
 	"free5gc/lib/openapi/models"
+	"free5gc/lib/path_util"
 	"free5gc/src/amf/context"
+	"free5gc/src/amf/factory"
+	"free5gc/src/amf/gmm"
+	"free5gc/src/amf/logger"
+	amf_ngap_sctp "free5gc/src/amf/ngap/sctp"
+	"free5gc/src/amf/util"
 )
 
 var TestAmf = context.AMF_Self()
@@ -102,8 +102,8 @@ func AmfInit() {
 	ue.Kamf = strings.Repeat("1", 64)
 	ue.SecurityCapabilities.NRIntegrityProtectionAlgorithms = [2]byte{0x40, 0x00}
 	ue.SecurityCapabilities.NREncryptionAlgorithms = [2]byte{0x40, 0x00}
-	ue.CipheringAlg = context.ALG_CIPHERING_128_NEA2
-	ue.IntegrityAlg = context.ALG_INTEGRITY_128_NIA2
+	ue.CipheringAlg = security.AlgCiphering128NEA2
+	ue.IntegrityAlg = security.AlgIntegrity128NIA2
 	ue.DerivateAnKey(models.AccessType__3_GPP_ACCESS)
 	ue.DerivateNH(ue.Kgnb)
 	ue.DerivateAlgKey()
@@ -217,19 +217,21 @@ func UeAttach(anType models.AccessType) {
 		if Conn == nil {
 			ran = TestAmf.NewAmfRan(testConn)
 		} else {
-			ran = TestAmf.AmfRanPool[Laddr.String()]
+			value, _ := TestAmf.AmfRanPool.Load(Laddr.String())
+			ran = value.(*context.AmfRan)
 		}
 	} else {
 		if Conn2 == nil {
 			testConn.RAddr.Value = "127.0.0.1:9488"
 			ran = TestAmf.NewAmfRan(testConn)
 		} else {
-			ran = TestAmf.AmfRanPool[Laddr2.String()]
+			value, _ := TestAmf.AmfRanPool.Load(Laddr2.String())
+			ran = value.(*context.AmfRan)
 		}
 	}
 	ran.AnType = anType
 	ranUe := ran.NewRanUe()
-	ue := TestAmf.UePool["imsi-2089300007487"]
+	ue, _ := TestAmf.AmfUeFindBySupi("imsi-2089300007487")
 	ran.SupportedTAList = []context.SupportedTAI{
 		{
 			Tai: ue.Tai,

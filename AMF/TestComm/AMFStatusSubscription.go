@@ -6,7 +6,7 @@ import (
 
 const (
 	AMFStatusSubscription403      = "AMFStatusSubscription403"
-	AMFStatusSubscription200      = "AMFStatusSubscription200"
+	AMFStatusSubscription201      = "AMFStatusSubscription201"
 	AMFStatusUnSubscription403    = "AMFStatusUnSubscription403"
 	AMFStatusUnSubscription204    = "AMFStatusUnSubscription204"
 	AMFStatusSubscriptionModfy403 = "AMFStatusSubscriptionModfy403"
@@ -21,7 +21,7 @@ func init() {
 		GuamiList:    nil,
 	}
 
-	ConsumerAMFStatusSubscriptionTable[AMFStatusSubscription200] = models.SubscriptionData{
+	ConsumerAMFStatusSubscriptionTable[AMFStatusSubscription201] = models.SubscriptionData{
 		AmfStatusUri: "https://127.0.0.1:29333/AMFStatusNotify",
 		GuamiList: []models.Guami{
 			{

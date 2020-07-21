@@ -68,6 +68,41 @@ func GetPostAppSessionsData_Normal() models.AppSessionContext {
 	return PostAppSessionsData
 }
 
+func GetPostAppSessionsData_AFInfluenceOnTrafficRouting() models.AppSessionContext {
+	PostAppSessionsData := models.AppSessionContext{
+		AscReqData: &models.AppSessionContextReqData{
+			AfAppId:  "edge",
+			Dnn:      "internet",
+			SuppFeat: "03",
+			Supi:     "imsi-2089300007487",
+			UeIpv4:   "60.60.0.1",
+			SliceInfo: &models.Snssai{
+				Sst: 1, Sd: "010203",
+			},
+			AfRoutReq: &models.AfRoutingRequirement{
+				AppReloc: false,
+				UpPathChgSub: &models.UpPathChgEvent{
+					DnaiChgType:     models.DnaiChangeType_LATE,
+					NotificationUri: "http://127.0.0.100:8000/nnef-callback/v1/traffic-influence/edge",
+					NotifCorreId:    "1234",
+				},
+				RouteToLocs: []models.RouteToLocation{
+					{
+						Dnai: "edge",
+						RouteInfo: &models.RouteInformation{
+							Ipv4Addr:   "140.113.100.100",
+							PortNumber: 8080,
+						},
+					},
+				},
+			},
+			NotifUri: "http://127.0.0.100:8000/nnef-callback/v1/applications/edge",
+			IpDomain: "edgeIPDomain",
+		},
+	}
+	return PostAppSessionsData
+}
+
 func GetPostAppSessionsData_Flow3() models.AppSessionContext {
 	PostAppSessionsData := GetPostAppSessionsData_Normal()
 	medComp := PostAppSessionsData.AscReqData.MedComponents["1"]

@@ -105,7 +105,7 @@ func init() {
 			Sd:  "010203",
 		},
 		DnnConfigurations: map[string]models.DnnConfiguration{
-			"internet": models.DnnConfiguration{
+			"internet": {
 				SscModes: &models.SscModes{
 					DefaultSscMode:  models.SscMode__1,
 					AllowedSscModes: []models.SscMode{models.SscMode__1, models.SscMode__2, models.SscMode__3},

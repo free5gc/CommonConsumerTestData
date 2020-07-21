@@ -2,11 +2,11 @@ package TestPDUSession
 
 import (
 	"bytes"
-	"github.com/google/uuid"
 	"free5gc/lib/nas"
 	"free5gc/lib/nas/nasMessage"
 	"free5gc/lib/nas/nasType"
 	"free5gc/lib/openapi/models"
+	"github.com/google/uuid"
 )
 
 const (
@@ -147,10 +147,10 @@ type nasMessageULNASTransportData struct {
 	inSpareHalfOctetAndPayloadContainerType uint8
 	inPayloadContainer                      nasType.PayloadContainer
 	inPduSessionID2Value                    nasType.PduSessionID2Value
-	inOldPDUSessionID                       nasType.OldPDUSessionID
-	inRequestType                           nasType.RequestType
-	inSNSSAI                                nasType.SNSSAI
-	inAdditionalInformation                 nasType.AdditionalInformation
+	//inOldPDUSessionID                       nasType.OldPDUSessionID
+	inRequestType nasType.RequestType
+	inSNSSAI      nasType.SNSSAI
+	//inAdditionalInformation                 nasType.AdditionalInformation
 }
 
 var NasMessageNasMessageULNASTransportDataTable = make(map[string]nasMessageULNASTransportData)
