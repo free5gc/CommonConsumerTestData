@@ -88,11 +88,8 @@ func GetPostAppSessionsData_AFInfluenceOnTrafficRouting() models.AppSessionConte
 				},
 				RouteToLocs: []models.RouteToLocation{
 					{
-						Dnai: "edge",
-						RouteInfo: &models.RouteInformation{
-							Ipv4Addr:   "140.113.100.100",
-							PortNumber: 8080,
-						},
+						Dnai:        "edge",
+						RouteProfId: "MEC1",
 					},
 				},
 			},
